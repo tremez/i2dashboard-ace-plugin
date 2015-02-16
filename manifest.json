@@ -2,14 +2,22 @@
 	"manifest_version": 2,
 
 	"name": "Ace Plugin",
+	"short_description": "This extension shows an Ace editor in all TEXTAREA fields",
 	"description": "This extension shows an Ace editor in all TEXTAREA fields",
 	"version": "1.0",
+	"icons":{
+		"16":"ace-logo.png",
+		"32":"ace-logo.png",
+		"48":"ace-logo.png",
+		"128":"ace-logo.png"
+	},
 
 	"browser_action": {
 		"default_icon": "ace-logo.png",
 		"default_title": "I am converting textareas to json editor"
 
 	},
+
 	"background": {
 		"scripts": [
 			"ace/ace.js","plugin.js"
