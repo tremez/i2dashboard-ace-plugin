@@ -3,7 +3,7 @@
 
 	"name": "Ace Plugin",
 	"description": "This extension shows an Ace editor in all TEXTAREA fields",
-	"version": "1.3",
+	"version": "1.5",
 	"icons":{
 		"16":"ace-logo.png",
 		"32":"ace-logo.png",
