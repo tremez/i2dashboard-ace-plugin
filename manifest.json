@@ -7,7 +7,7 @@
 
 	"browser_action": {
 		"default_icon": "ace-logo.png",
-		"default_title": "Get JSON "
+		"default_title": "I am converting textareas to json editor"
 
 	},
 	"background": {
