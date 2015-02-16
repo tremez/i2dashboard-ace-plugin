@@ -14,7 +14,6 @@
 	"browser_action": {
 		"default_icon": "ace-logo.png",
 		"default_title": "I am converting textareas to json editor"
-
 	},
 
 	"background": {
@@ -24,16 +23,30 @@
 		"persistent": false
 	},
 	"permissions": [
-		"activeTab"
+		"*://i2cspmaster1/*",
+		"*://i2master1/*",
+		"*://dmatool.lsjet.com/*",
+		"*://placements.prod.showserver.us/*",
+		"*://*.mycmdb.net/*"
 	],
 
 	"content_scripts": [
 		{
-			"matches": ["*://*/*dashboard*"],
-			"js": ["jquery-1.11.2.min.js","ace/ace.js","ace/mode-json.js","ace/worker-json.js","ace/theme-github.js","plugin.js"]
+			"matches": [
+				"*://i2cspmaster1/i2/dashboard/*",
+				"*://i2master1/i2/dashboard/*",
+				"*://dmatool.lsjet.com/i2/dashboard/*",
+				"*://placements.prod.showserver.us/i2/dashboard/*",
+				"*://*.mycmdb.net/i2/dashboard/*"
+			],
+			"js": [
+				"jquery-1.11.2.min.js",
+				"ace/ace.js",
+				"ace/mode-json.js",
+				"ace/worker-json.js",
+				"ace/theme-github.js",
+				"plugin.js"
+			]
 		}
 	]
-
 }
-
-
