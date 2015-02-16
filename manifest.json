@@ -3,7 +3,7 @@
 
 	"name": "Ace Plugin",
 	"description": "This extension shows an Ace editor in all TEXTAREA fields",
-	"version": "1.0",
+	"version": "1.3",
 	"icons":{
 		"16":"ace-logo.png",
 		"32":"ace-logo.png",
@@ -24,12 +24,12 @@
 		"persistent": false
 	},
 	"permissions": [
-		"activeTab","tabs", "http://*/*"
+		"activeTab"
 	],
 
 	"content_scripts": [
 		{
-			"matches": ["*://*/*"],
+			"matches": ["*://*/*dashboard*"],
 			"js": ["jquery-1.11.2.min.js","ace/ace.js","ace/mode-json.js","ace/worker-json.js","ace/theme-github.js","plugin.js"]
 		}
 	]
