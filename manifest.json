@@ -1,0 +1,32 @@
+{
+	"manifest_version": 2,
+
+	"name": "Ace Plugin",
+	"description": "This extension shows an Ace editor in all TEXTAREA fields",
+	"version": "1.0",
+
+	"browser_action": {
+		"default_icon": "ace-logo.png",
+		"default_title": "Get JSON "
+
+	},
+	"background": {
+		"scripts": [
+			"ace/ace.js","plugin.js"
+		],
+		"persistent": false
+	},
+	"permissions": [
+		"activeTab","tabs", "http://*/*"
+	],
+
+	"content_scripts": [
+		{
+			"matches": ["*://*/*"],
+			"js": ["jquery-1.11.2.min.js","ace/ace.js","ace/mode-json.js","ace/worker-json.js","ace/theme-github.js","plugin.js"]
+		}
+	]
+
+}
+
+
