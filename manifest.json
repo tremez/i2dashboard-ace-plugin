@@ -2,7 +2,6 @@
 	"manifest_version": 2,
 
 	"name": "Ace Plugin",
-	"short_description": "This extension shows an Ace editor in all TEXTAREA fields",
 	"description": "This extension shows an Ace editor in all TEXTAREA fields",
 	"version": "1.0",
 	"icons":{
