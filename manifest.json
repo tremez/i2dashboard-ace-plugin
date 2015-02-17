@@ -1,52 +1,20 @@
 {
 	"manifest_version": 2,
-
 	"name": "Ace Plugin",
-	"description": "This extension shows an Ace editor in all TEXTAREA fields",
-	"version": "1.5",
-	"icons":{
-		"16":"ace-logo.png",
-		"32":"ace-logo.png",
-		"48":"ace-logo.png",
-		"128":"ace-logo.png"
-	},
-
-	"browser_action": {
-		"default_icon": "ace-logo.png",
-		"default_title": "I am converting textareas to json editor"
-	},
-
-	"background": {
-		"scripts": [
-			"ace/ace.js","plugin.js"
-		],
-		"persistent": false
-	},
+	"description": "This extension shows an Ace editor in all TEXTAREA fields with json",
+	"version": "2.0",
 	"permissions": [
-		"*://i2cspmaster1/*",
-		"*://i2master1/*",
-		"*://dmatool.lsjet.com/*",
-		"*://placements.prod.showserver.us/*",
-		"*://*.mycmdb.net/*"
-	],
-
+	    "*://*/i2/dashboard"
+	  ],
 	"content_scripts": [
 		{
-			"matches": [
-				"*://i2cspmaster1/i2/dashboard/*",
-				"*://i2master1/i2/dashboard/*",
-				"*://dmatool.lsjet.com/i2/dashboard/*",
-				"*://placements.prod.showserver.us/i2/dashboard/*",
-				"*://*.mycmdb.net/i2/dashboard/*"
-			],
-			"js": [
-				"jquery-1.11.2.min.js",
-				"ace/ace.js",
-				"ace/mode-json.js",
-				"ace/worker-json.js",
-				"ace/theme-github.js",
-				"plugin.js"
-			]
+			"matches": ["*://*/*"],
+			"js": ["patch-worker.js", "ace/ace.js","ace/mode-json.js","ace/theme-github.js","plugin.js"]
 		}
+	],
+	"web_accessible_resources": [
+		"ace/worker-json.js"
 	]
 }
+
+
