@@ -1,45 +1,49 @@
-$(function () {
+(function () {
+  var mode = 'json',
+      expand = {
+        width: 50,
+        height: 300
+      };
+
+  function convertToAce(textarea) {
+    var textareaStyle = window.getComputedStyle(textarea),
+        holder = document.createElement('div'),
+        editor, session;
+
+    with(holder.style) {
+      width = Math.floor(parseFloat(textareaStyle.width) * 10) / 10 + expand.width + 'px';
+      height = Math.floor(parseFloat(textareaStyle.height) * 10) / 10 +  expand.height + 'px';
+
+    }
+
+    textarea.style.visibility = 'hidden';
+    textarea.parentNode.insertBefore(holder, textarea);
+
+    ace.config.setModuleUrl('ace/mode/json_worker', chrome.runtime.getURL("ace/worker-json.js"));
+    editor = ace.edit(holder);
+    
+    editor.renderer.setShowGutter(true);
+    //editor.setTheme("ace/theme/github");
+
+    session = editor.getSession();
+    session.setMode("ace/mode/" + mode);
+    session.setValue(textarea.value);
+    //session.setUseWorker(false);
+    
+
+    session.on('change', function(){
+      textarea.value = session.getValue();
+    });
 
 
-	function convertToAce(el){
+  }
 
-		var textarea = el;
-
-		var mode = 'json';
-
-		var editDiv = $('<div>', {
-			position: 'absolute',
-			width: textarea.width()+100,
-			height: textarea.height()+300,
-
-		}).insertBefore(textarea);
-		textarea.css('visibility', 'hidden');
-		var editor = ace.edit(editDiv[0]);
-		editor.renderer.setShowGutter(true);
-		editor.getSession().setValue(textarea.val());
-		editor.getSession().setMode("ace/mode/" + mode);
-		//editor.setTheme("ace/theme/github");
-
-		editor.getSession().on('change', function(){
-			textarea.val(editor.getSession().getValue());
-		});
-
-	}
-
-
-	$(document).on('DOMNodeInserted', function(e) {
-
-
-		if($(e.target).is('textarea')){
-			var textarea=$(e.target);
-			var value=textarea.val();
-			if(value.indexOf('{')!=-1){
-				convertToAce(textarea);
-			}
-
-		}
-
-	});
-
-
-});
+  document.addEventListener('DOMNodeInserted', function (e) {
+    var node = e.target, text;
+    if (node.nodeType === 1 && node.type === 'textarea') {
+      if (e.target.value.trim().indexOf('{') === 0) {
+        convertToAce(node);
+      }
+    }
+  }, false);
+}())
