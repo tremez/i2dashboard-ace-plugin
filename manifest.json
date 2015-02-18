@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "Ace Plugin",
 	"description": "This extension shows an Ace editor in all TEXTAREA fields with json",
-	"version": "2.0",
+	"version": "2.1",
 	"permissions": [
 		"*://i2cspmaster1/*",
 		"*://i2master1/*",
@@ -12,7 +12,13 @@
 	],
 	"content_scripts": [
 		{
-			"matches": ["*://*/i2/dashboard/*"],
+			"matches": [
+				"*://i2cspmaster1/i2/dashboard/*",
+				"*://i2master1/i2/dashboard/*",
+				"*://dmatool.lsjet.com/i2/dashboard/*",
+				"*://placements.prod.showserver.us/i2/dashboard/*",
+				"*://*.mycmdb.net/i2/dashboard/*"
+			],
 			"js": ["patch-worker.js", "ace/ace.js","ace/mode-json.js","ace/theme-github.js","plugin.js"]
 		}
 	],
