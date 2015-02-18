@@ -4,8 +4,12 @@
 	"description": "This extension shows an Ace editor in all TEXTAREA fields with json",
 	"version": "2.0",
 	"permissions": [
-	    "*://*/i2/dashboard"
-	  ],
+		"*://i2cspmaster1/*",
+		"*://i2master1/*",
+		"*://dmatool.lsjet.com/*",
+		"*://placements.prod.showserver.us/*",
+		"*://*.mycmdb.net/*"
+	],
 	"content_scripts": [
 		{
 			"matches": ["*://*/i2/dashboard/*"],
