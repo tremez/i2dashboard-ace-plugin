@@ -8,7 +8,7 @@
 	  ],
 	"content_scripts": [
 		{
-			"matches": ["*://*/*"],
+			"matches": ["*://*/i2/dashboard/*"],
 			"js": ["patch-worker.js", "ace/ace.js","ace/mode-json.js","ace/theme-github.js","plugin.js"]
 		}
 	],
