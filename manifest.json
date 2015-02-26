@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "Ace Plugin",
 	"description": "This extension shows an Ace editor in all TEXTAREA fields with json",
-	"version": "3.0",
+	"version": "3.1",
 	"permissions": [
 		"*://i2cspmaster1/*",
 		"*://i2master1/*",
@@ -28,14 +28,16 @@
 				"jquery-ui-content.hack.js",
 				"patch-worker.js",
 				"ace/ace.js",
-				"ace/mode-json.js",
+				"ace/mode/mode-json.js",
+        "ace/mode/mode-html.js",
 				"ace/theme-github.js"
 				,"plugin.js"
 			]
 		}
 	],
 	"web_accessible_resources": [
-		"ace/worker-json.js",
+		"ace/mode/worker-json.js",
+    "ace/mode/worker-html.js",
 		"jquery-ui/images/*"
 	]
 }
