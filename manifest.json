@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "Ace Plugin",
 	"description": "This extension shows an Ace editor in all TEXTAREA fields with json",
-	"version": "3.1",
+	"version": "3.2",
 	"permissions": [
 		"*://i2cspmaster1/*",
 		"*://i2master1/*",

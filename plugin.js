@@ -31,7 +31,16 @@
 
 			session = editor.getSession();
 			session.setMode('ace/mode/' + mode);
-			session.setValue(textarea.value);
+			var value=textarea.value
+			if(mode==='json'){
+				try{
+					var o = JSON.parse(value);
+					value = JSON.stringify(o, null, 4);
+				}catch(e){
+					
+				}
+			}
+			session.setValue(value);
 
 
 			session.on('change', function () {
