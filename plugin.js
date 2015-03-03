@@ -60,5 +60,20 @@
         convertToAce(node, 'html');
       }
 		}
+
+		var button=$(document).has('#save-changes-button');
+		console.log(button.length);
+		if(!button.length){
+			console.log('NO BUTTPN');
+			var saveButton=$('<div class="form-actions"><button id="save-changes-button" type="submit" class="btn">Save changes</button><button id="cancel-changes-button" type="button" class="btn btn-link">Cancel</button></div>')
+			saveButton.insertAfter('.message-holder');
+		}
+
+
+
 	}, false);
+
+
+
+
 }())
