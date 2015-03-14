@@ -1,8 +1,8 @@
 {
 	"manifest_version": 2,
-	"name": "Ace Plugin",
+	"name": "I2 Dashboard Tools",
 	"description": "This extension shows an Ace editor in all TEXTAREA fields with json",
-	"version": "3.2",
+	"version": "3.7",
 	"permissions": [
 		"*://i2cspmaster1/*",
 		"*://i2master1/*",
@@ -13,6 +13,7 @@
 	"content_scripts": [
 		{
 			"matches": [
+				"*://*/*",
 				"*://i2cspmaster1/i2/dashboard/*",
 				"*://i2master1/i2/dashboard/*",
 				"*://dmatool.lsjet.com/i2/dashboard/*",
@@ -20,7 +21,9 @@
 				"*://*.mycmdb.net/i2/dashboard/*"
 			],
 			"css":[
-				"jquery-ui/jquery-ui.css"
+				"jquery-ui/jquery-ui.css",
+				"jsondiffpatch/formatters-styles/html.css"
+
 			],
 			"js": [
 				"jquery-ui/external/jquery/jquery.js",
@@ -29,15 +32,19 @@
 				"patch-worker.js",
 				"ace/ace.js",
 				"ace/mode/mode-json.js",
-        "ace/mode/mode-html.js",
-				"ace/theme-github.js"
-				,"plugin.js"
+        		"ace/mode/mode-html.js",
+				"ace/theme-github.js",
+				"jsondiffpatch/build/jsondiffpatch.js",
+				"jsondiffpatch/build/jsondiffpatch-formatters.js",
+				"jsondiffpatch/external/diff_match_patch_uncompressed.js",
+				"plugin.js"
 			]
 		}
 	],
 	"web_accessible_resources": [
+		"jsondiffpatch/build/jsondiffpatch.js",
 		"ace/mode/worker-json.js",
-    "ace/mode/worker-html.js",
+    	"ace/mode/worker-html.js",
 		"jquery-ui/images/*"
 	]
 }
