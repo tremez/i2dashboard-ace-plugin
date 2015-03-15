@@ -1,7 +1,25 @@
 (function () {
 	var prodI2='http://dmatool.lsjet.com/';
 	var apiPrefix='/i2/api/v1/';
+	var defaultEntityFieldsQuery='fields=id,name,tag,properties,dictionaryProperty,relations[*(id,name,tag)]'
+/*
+ /classes/ad_group3 - class structure
+ /classes/ad_group3/entities/1152793 - actual entity
+ /classes/ad_group3/entities?query=tag:ag122 - SEARCH BY TAG
+ */
+	function parseLocation(location){
+		var parts=location.split('#');
+		var data=parts[1];
+		parts=data.split('/');
+		var ret={};
+		ret.class=parts[2];
+		if(parts.length==5){
+			ret.entityId=parts[4]
+		};
+		return ret;
 
+
+	}
 
 	function convertToAce(textarea, mode) {
 		var controls = $(textarea).parent().parent().find('.i2-table-row-controls');
@@ -19,7 +37,13 @@
 				title: $('#model\\.name').val() +  ' - ' + mode.toUpperCase() + ' Editor',
 				width: $(window).width() - 50,
 				height: $(window).height() - 50,
-				modal: true
+				modal: true,
+				create: function(event, ui) {
+					$("body").css({ overflow: 'hidden' })
+				},
+				beforeClose: function(event, ui) {
+					$("body").css({ overflow: 'inherit' })
+				}
 			});
 
 
@@ -54,70 +78,98 @@
 
 
 	}
+	function showVisualDiff(left,right,isClass){
+		var instance = jsondiffpatch.create({
+			objectHash: function(obj, index) {
+				if (typeof obj._id !== 'undefined') {
+					return obj._id;
+				}
+				if (typeof obj.id !== 'undefined') {
+					return obj.id;
+				}
+				if (typeof obj.name !== 'undefined') {
+					return obj.name;
+				}
+				return '$$index:' + index;
+			}
+		});
+		var delta = instance.diff(left,right );
+		//var html=jsondiffpatch.html.diffToHtml(localVersion[0], remoteVersion[0], delta)
+		var html=$(jsondiffpatch.formatters.html.format(delta, left));
+		//jsondiffpatch.formatters.html.hideUnchanged();
+		var location=parseLocation(document.location.href);
+		var title=location.class;
+		if(!isClass){
+			title+=' : ' +$('#model\\.name').val();
+		}
+		title+=' Visual Diff (PROD -> LOCAL)';
+		$(html).dialog({
+			title: title,
+			width: $(window).width() - 50,
+			height: $(window).height() - 50,
+			modal: true,
+			create: function(event, ui) {
+				$("body").css({ overflow: 'hidden' })
+			},
+			beforeClose: function(event, ui) {
+				$("body").css({ overflow: 'inherit' })
+			}
+		});
+	};
 
 	function compareWithProd(e){
 		e.preventDefault();
-		console.log(document.location.href);
 		var tag=$('#model\\.tag').val();
 		var host=document.location.protocol+'//'+document.location.host;
 		if(document.location.port){
 			host+=':'+document.location.port;
 		}
-		var parts=document.location.href.split('#');
-		var requestSuffix='';
-		if(parts.length>1){
-			requestSuffix=parts[1];
+
+		var location=parseLocation(document.location.href);
+
+		var query='/classes/'+location.class;
+		if(location.entityId){
+			query+='/entities?query=tag:'+tag+'&'+defaultEntityFieldsQuery;
 		}
-		var apiUrl=host+apiPrefix+requestSuffix;
-		var prodUrl=prodI2+apiPrefix+requestSuffix;
 
 
-		console.log(tag);
-		console.log(parts);
-		console.log(apiUrl);
-		console.log(prodUrl);
-
-
+		var apiUrl=host+apiPrefix+query;
+		var prodUrl=prodI2+apiPrefix+query;
 		var d1 = $.get(apiUrl);
 		var d2 = $.get(prodUrl);
 
 		$.when( d1,d2 ).done(function ( localVersion, remoteVersion ) {
+			var left=remoteVersion[0];
+			var right=localVersion[0];
+			if(location.entityId){
+				left=left['records'][0];
+				right=right['records'][0];
 
-			var instance = jsondiffpatch.create({
-				objectHash: function(obj, index) {
-					if (typeof obj._id !== 'undefined') {
-						return obj._id;
-					}
-					if (typeof obj.id !== 'undefined') {
-						return obj.id;
-					}
-					if (typeof obj.name !== 'undefined') {
-						return obj.name;
-					}
-					return '$$index:' + index;
-				}
-			});
+			}
+			showVisualDiff(left,right);
+		});
 
-			console.log('--------------');
-			console.log(JSON.stringify(remoteVersion[0]));
-			console.log('--------------');
-			console.log(JSON.stringify(localVersion[0]));
-
-			var delta = instance.diff(remoteVersion[0],localVersion[0] );
-			//var html=jsondiffpatch.html.diffToHtml(localVersion[0], remoteVersion[0], delta)
-			var html=$(jsondiffpatch.formatters.html.format(delta, remoteVersion[0]));
-			jsondiffpatch.formatters.html.hideUnchanged();
-
-			$(html).dialog({
-				title: $('#model\\.name').val() + ' Visual Diff',
-				width: $(window).width() - 50,
-				height: $(window).height() - 50,
-				modal: true
-			});
+	}
 
 
+	function compareClassDefinitionWithProd(e){
+		e.preventDefault();
+		var host=document.location.protocol+'//'+document.location.host;
+		if(document.location.port){
+			host+=':'+document.location.port;
+		}
 
+		var location=parseLocation(document.location.href);
 
+		var query='/classes/'+location.class;
+		var apiUrl=host+apiPrefix+query;
+		var prodUrl=prodI2+apiPrefix+query;
+		var d1 = $.get(apiUrl);
+		var d2 = $.get(prodUrl);
+		$.when( d1,d2 ).done(function ( localVersion, remoteVersion ) {
+			var left=remoteVersion[0];
+			var right=localVersion[0];
+			showVisualDiff(left,right,true);
 		});
 
 	}
@@ -145,17 +197,17 @@
 				var btngroup=breadcrumb.find('.pull-right');
 				menu='<div class="dropdown tremezmenu btn-group">' +
 					'<button class="btn btn-small dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">' +
-					'<span class="icon-briefcase"></span></button>' +
+					'<span class="glyphicon-birthday-cake"></span></button>' +
 					'<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">' +
 					'<li role="presentation"><a role="menuitem" tabindex="-1" class="compareWithProd" href="#">Compare with Prod version</a></li>' +
-					'<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>' +
-					'<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>' +
-					'<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>' +
+					'<li role="presentation"><a role="menuitem" tabindex="-1" class="compareClassDefinitionWithProd" href="#">Compare Class Def with Prod</a></li>' +
 					'</ul>' +
 					'</div>';
 				menu=$(menu);
 				btngroup.prepend(menu);
 				$('.compareWithProd').click(compareWithProd);
+				$('.compareClassDefinitionWithProd').click(compareClassDefinitionWithProd);
+
 			}
 
 

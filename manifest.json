@@ -22,8 +22,8 @@
 			],
 			"css":[
 				"jquery-ui/jquery-ui.css",
-				"jsondiffpatch/formatters-styles/html.css"
-
+				"jsondiffpatch/formatters-styles/html.css",
+				"bootstrap-glyphicons/glyphicons-free.css"
 			],
 			"js": [
 				"jquery-ui/external/jquery/jquery.js",
@@ -45,7 +45,8 @@
 		"jsondiffpatch/build/jsondiffpatch.js",
 		"ace/mode/worker-json.js",
     	"ace/mode/worker-html.js",
-		"jquery-ui/images/*"
+		"jquery-ui/images/*",
+		"bootstrap-glyphicons/*"
 	]
 }
 
