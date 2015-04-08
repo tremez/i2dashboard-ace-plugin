@@ -16,10 +16,11 @@ $(function(){
 
 	var ss = document.styleSheets;
 
-	for (var i=0; i<ss.length; i++) {
+	for (var i=0; i < ss.length; i++) {
 		var rules = ss[i].rules || ss[i].cssRules;
-		if (rules[0].selectorText!="#chrome-extention-relative-paths")
+		if (!rules.length || rules[0].selectorText !== "#chrome-extention-relative-paths") {
 			continue;
+		}
 		fixcsspath(ss[i].rules, '/images/');
 	}
 });
