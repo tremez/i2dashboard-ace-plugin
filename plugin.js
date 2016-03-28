@@ -1,5 +1,5 @@
 (function () {
-	var prodI2='http://dmatool.lsjet.com/';
+	var prodI2='http://i2master1-1.sla295.mycmdb.net:8180';
 	var apiPrefix='/i2/api/v1/';
 	var defaultEntityFieldsQuery='fields=id,name,tag,properties,dictionaryProperty,relations[*(id,name,tag)]'
 /*
@@ -121,9 +121,9 @@
 		e.preventDefault();
 		var tag=$('#model\\.tag').val();
 		var host=document.location.protocol+'//'+document.location.host;
-		if(document.location.port){
-			host+=':'+document.location.port;
-		}
+		//if(document.location.port){
+		//	host+=':'+document.location.port;
+		//}
 
 		var location=parseLocation(document.location.href);
 
@@ -173,6 +173,16 @@
 		});
 
 	}
+	function jsonRepresentationChangeset(e){
+		e.preventDefault();
+		var host=document.location.protocol+'//'+document.location.host;
+		// if(document.location.port){
+		// 	host+=':'+document.location.port;
+		// }
+		var location=parseLocation(document.location.href);
+
+		window.open(host+'/i2/api/v1/classes/'+location.class+'/entities/'+location.entityId+'?fields=*,dictionaryProperty,relations%5B*(tag)%5D');
+	}
 
 	document.addEventListener('DOMNodeInserted', function (e) {
 		var node = e.target, text;
@@ -201,12 +211,15 @@
 					'<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">' +
 					'<li role="presentation"><a role="menuitem" tabindex="-1" class="compareWithProd" href="#">Compare with Prod version</a></li>' +
 					'<li role="presentation"><a role="menuitem" tabindex="-1" class="compareClassDefinitionWithProd" href="#">Compare Class Def with Prod</a></li>' +
+					'<li role="presentation"><a role="menuitem" tabindex="-1" class="jsonRepresentationChangeset" href="#">JSON Representation(ChangeSet)</a></li>' +
 					'</ul>' +
 					'</div>';
 				menu=$(menu);
 				btngroup.prepend(menu);
 				$('.compareWithProd').click(compareWithProd);
 				$('.compareClassDefinitionWithProd').click(compareClassDefinitionWithProd);
+				$('.jsonRepresentationChangeset').click(jsonRepresentationChangeset);
+
 
 			}
 
