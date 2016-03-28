@@ -7,6 +7,17 @@
  /classes/ad_group3/entities/1152793 - actual entity
  /classes/ad_group3/entities?query=tag:ag122 - SEARCH BY TAG
  */
+	var postTemplate=`
+	
+	    <changeSet id="{{classname}}-{{entityId}}" author="taras.remez" dbms="i2">
+        <sql stripComments="true">
+            <![CDATA[
+                POST v1/classes/{{classname}}/entities {{payload}}
+      ]]>
+        </sql>
+    </changeSet>
+	
+	`;
 	function parseLocation(location){
 		var parts=location.split('#');
 		var data=parts[1];
@@ -19,6 +30,9 @@
 		return ret;
 
 
+	}
+	function isObject(obj){
+		return Object.prototype.toString.call( obj ) === '[object Object]';
 	}
 
 	function convertToAce(textarea, mode) {
@@ -173,6 +187,34 @@
 		});
 
 	}
+	function prepareEntity(obj){
+
+
+		var toRemoveProperties=['id','legacyId','revision','creationDate','createdBy','modificationDate','lastModifiedBy','dictionaryId'];
+		toRemoveProperties.forEach(function(val,index){
+			delete obj[val];
+		});
+		var keys=Object.keys(obj);
+		keys.forEach(function(key){
+
+			if(Array.isArray(obj[key])){
+				obj[key].forEach(function(val){
+					if(isObject(val)){
+						val=prepareEntity(val);
+					}
+				})
+			};
+
+
+			if(isObject(obj[key])){
+				obj[key]=prepareEntity(obj[key]);
+			}
+
+		});
+		return obj;
+
+
+	}
 	function jsonRepresentationChangeset(e){
 		e.preventDefault();
 		var host=document.location.protocol+'//'+document.location.host;
@@ -181,7 +223,21 @@
 		// }
 		var location=parseLocation(document.location.href);
 
-		window.open(host+'/i2/api/v1/classes/'+location.class+'/entities/'+location.entityId+'?fields=*,dictionaryProperty,relations%5B*(tag)%5D');
+		var apiUrl = host+'/i2/api/v1/classes/'+location.class+'/entities/'+location.entityId+'?fields=*,dictionaryProperty,relations%5B*(tag)%5D';
+		var d1 = $.get(apiUrl);
+		$.when( d1 ).done(function ( localVersion ) {
+			localVersion=prepareEntity(localVersion);
+			var payload=JSON.stringify(localVersion,null,4);
+			var postTemplate1=postTemplate.replace('{{payload}}',payload);
+			var postTemplate1=postTemplate1.replace('{{classname}}',location.class);
+			var postTemplate1=postTemplate1.replace('{{classname}}',location.class);
+			var postTemplate1=postTemplate1.replace('{{entityId}}',location.entityId);
+
+			console.log(postTemplate1);
+			window.open('data:text/xml,'+encodeURIComponent(postTemplate1),location.class+'-'+location.entityId, "width=300,height=300,scrollbars=1,resizable=1");
+
+		});
+
 	}
 
 	document.addEventListener('DOMNodeInserted', function (e) {
