@@ -257,7 +257,11 @@
 			var postTemplate1=postTemplate.replace('{{payload}}',payload);
 			var postTemplate1=postTemplate1.replace('{{classname}}',location.class);
 			var postTemplate1=postTemplate1.replace('{{classname}}',location.class);
-			var postTemplate1=postTemplate1.replace('{{entityId}}',location.entityId);
+			var eid=location.entityId;
+			if(Array.isArray(localVersion)){
+				eid='all';
+			}
+			var postTemplate1=postTemplate1.replace('{{entityId}}',eid);
 
 			console.log(postTemplate1);
 			window.open('data:text/xml,'+encodeURIComponent(postTemplate1),location.class+'-'+location.entityId, "width=300,height=300,scrollbars=1,resizable=1");
