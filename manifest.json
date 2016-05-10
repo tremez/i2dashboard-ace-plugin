@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	"name": "I2 Dashboard Tools",
 	"description": "This extension shows an Ace editor in all TEXTAREA fields with json",
-	"version": "3.7",
+	"version": "3.9",
 	"permissions": [
 		"*://i2cspmaster1/*",
 		"*://i2master1/*",
