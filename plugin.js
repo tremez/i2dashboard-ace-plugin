@@ -337,7 +337,9 @@
 				var patchTemplate1=patchTemplate.replace('{{classname}}',location.class);
 				var patchTemplate1=patchTemplate1.replace('{{classname}}',location.class);
 				var patchTemplate1=patchTemplate1.replace('{{entitytag}}',entitytag);
-				var eid=location.entityId;
+				var milliseconds = (new Date).getTime();
+
+				var eid=record.id+'-'+record.tag + '-'  + milliseconds;
 				// if(Array.isArray(localVersion)){
 				// 	eid='all';
 				// }
