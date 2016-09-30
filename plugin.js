@@ -332,12 +332,12 @@
 		var d1 = $.get(apiUrl);
 		$.when( d1 ).done(function ( data ) {
 			var records=data.records;
+			var milliseconds = (new Date).getTime();
 			records.forEach(function(record){
 				var entitytag=record.tag;
 				var patchTemplate1=patchTemplate.replace('{{classname}}',location.class);
 				var patchTemplate1=patchTemplate1.replace('{{classname}}',location.class);
 				var patchTemplate1=patchTemplate1.replace('{{entitytag}}',entitytag);
-				var milliseconds = (new Date).getTime();
 
 				var eid=record.id+'-'+record.tag + '-'  + milliseconds;
 				// if(Array.isArray(localVersion)){
