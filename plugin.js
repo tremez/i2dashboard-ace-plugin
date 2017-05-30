@@ -542,11 +542,12 @@
 					'<button class="btn btn-small dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">' +
 					'<span class="glyphicon-birthday-cake"></span></button>' +
 					'<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">' +
+					'<li role="presentation"><a role="menuitem" tabindex="-1" class="jsonRepresentationChangeset" href="#" title="CREATE Changeset for CURRENT entity">CREATE Changeset for CURRENT entity</a></li>' +
+					'<li role="presentation"><a role="menuitem" tabindex="-1" class="patchHeaderChangeset" href="#" title="Lates PATCHes for CURRENT entity">Lates PATCHes for CURRENT entity</a></li>' +
+					'<li role="presentation">-- DEPRECATED -- </li>'+
 					'<li role="presentation"><a role="menuitem" tabindex="-1" class="compareWithProd" href="#">Compare with Prod version</a></li>' +
 					'<li role="presentation"><a role="menuitem" tabindex="-1" class="compareClassDefinitionWithProd" href="#">Compare Class Def with Prod</a></li>' +
 					'<li role="presentation"><a role="menuitem" tabindex="-1" class="jsonRepresentationClass" href="#">Changeset for Class Definition</a></li>' +
-					'<li role="presentation"><a role="menuitem" tabindex="-1" class="jsonRepresentationChangeset" href="#" title="CREATE Changeset for CURRENT entity">CREATE Changeset for CURRENT entity</a></li>' +
-					'<li role="presentation"><a role="menuitem" tabindex="-1" class="patchHeaderChangeset" href="#" title="Lates PATCHes for CURRENT entity">Lates PATCHes for CURRENT entity</a></li>' +
 					'<li role="presentation"><a role="menuitem" tabindex="-1" class="jsonRepresentationChangesetAll" href="#">Changeset for ALL entities</a></li>' +
 					'<li role="presentation"><a role="menuitem" tabindex="-1" class="jsonRepresentationChangesetPatchMessagesAll" href="#">Changeset for ALL MESSAGE entities PATCH</a></li>' +
 
