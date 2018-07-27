@@ -346,7 +346,7 @@
 
 	}
 
-	function jsonRepresentationClass(e) {
+	function jsonRepresentationClassOrDictionary(e) {
 		e.preventDefault();
 		let host = document.location.protocol + '//' + document.location.host;
 		// if(document.location.port){
@@ -354,14 +354,37 @@
 		// }
 		let location = parseLocation(document.location.href);
 		//http://i2master1-1.sgb71.mycmdb.net:8180/i2/api/v1/classes/bpm_timer_schedule?fields=*,derivedProperties
-		let apiUrl = host + '/i2/api/v1/classes/' + location.class + '?fields=*,derivedProperties';
+		let apiUrl;
+		if(location.class){
+             apiUrl = host + '/i2/api/v1/classes/' + location.class + '?fields=*,derivedProperties';
+        }
+        if(location.dictionaryId){
+             apiUrl = host + '/i2/api/v1/dictionaries/' + location.dictionaryId ;
+        }
+
+        console.log(location,apiUrl);
+
+
 		let d1 = $.get(apiUrl);
 		$.when(d1).done(function (localVersion) {
 			localVersion = prepareEntity(localVersion);
 			let payload = JSON.stringify(localVersion, null, 4);
-			let postTemplate1 = putTemplate.replace('{{payload}}', payload);
+
+			let postTemplate1;
+			if(location.class){
+                postTemplate1 = putTemplate.replace('{{payload}}', payload);
+
+            }
+            if(location.dictionaryId){
+                postTemplate1 = postTemplateDictionary.replace('{{payload}}', payload);
+
+            }
+
 			postTemplate1 = postTemplate1.replace('{{classname}}', location.class);
 			postTemplate1 = postTemplate1.replace('{{classname}}', location.class);
+            postTemplate1 = postTemplate1.replace('{{dictionaryName}}', location.dictionaryName);
+            postTemplate1 = postTemplate1.replace('{{dictionaryName}}', location.dictionaryName);
+
 			postTemplate1 = postTemplate1.replace('{{entityId}}', 'classdef');
 
 			// console.log(postTemplate1);
@@ -620,14 +643,14 @@
 			let localVersion = data.records;
 			localVersion = prepareEntity(localVersion);
 			let payload = JSON.stringify(localVersion, null, 4);
-			let postTemplate1 = postTemplate.replace('{{payload}}', payload);
-			let postTemplate1 = postTemplate1.replace('{{classname}}', location.class);
-			let postTemplate1 = postTemplate1.replace('{{classname}}', location.class);
+			postTemplate1 = postTemplate.replace('{{payload}}', payload);
+			postTemplate1 = postTemplate1.replace('{{classname}}', location.class);
+			postTemplate1 = postTemplate1.replace('{{classname}}', location.class);
 			let eid = location.entityId;
 			if (Array.isArray(localVersion)) {
 				eid = 'all';
 			}
-			let postTemplate1 = postTemplate1.replace('{{entityId}}', eid);
+			postTemplate1 = postTemplate1.replace('{{entityId}}', eid);
 
 			console.log(postTemplate1);
 			window.open('data:text/xml,' + encodeURIComponent(postTemplate1), location.class + '-' + location.entityId, "width=300,height=300,scrollbars=1,resizable=1");
@@ -737,7 +760,6 @@
 					'<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">' +
 					'<li role="presentation"><a role="menuitem" tabindex="-1" class="jsonRepresentationChangeset" href="#" title="CREATE Changeset for CURRENT entity">CREATE Changeset for CURRENT entity</a></li>' +
 					'<li role="presentation"><a role="menuitem" tabindex="-1" class="patchHeaderChangeset" href="#" title="Lates PATCHes for CURRENT entity/class">Lates PATCHes for CURRENT entity/class</a></li>' +
-                    '<li role="presentation"><a role="menuitem" tabindex="-1" class="patchHeaderChangesetDictionary" href="#" title="Lates PATCHes for CURRENT Dictionary">Lates PATCHes for CURRENT entity/class</a></li>' +
                     '<li role="presentation">-- DEPRECATED -- </li>' +
 					'<li role="presentation"><a role="menuitem" tabindex="-1" class="compareWithProd" href="#">Compare with Prod version</a></li>' +
 					'<li role="presentation"><a role="menuitem" tabindex="-1" class="compareClassDefinitionWithProd" href="#">Compare Class Def with Prod</a></li>' +
@@ -755,11 +777,11 @@
 				$('.jsonRepresentationChangeset').click(jsonRepresentationChangeset);
 				$('.patchHeaderChangeset').click(patchHeaderChangeset);
 				$('.jsonRepresentationChangesetAll').click(jsonRepresentationChangesetAll);
-				$('.jsonRepresentationClass').click(jsonRepresentationClass);
+				$('.jsonRepresentationClass').click(jsonRepresentationClassOrDictionary);
 				$('.jsonRepresentationChangesetPatchMessagesAll').click(jsonRepresentationChangesetPatchMessagesAll);
 
 				$('.fastPost').click(jsonRepresentationChangeset);
-				$('.classFastPost').click(jsonRepresentationClass);
+				$('.classFastPost').click(jsonRepresentationClassOrDictionary);
 
 
 
