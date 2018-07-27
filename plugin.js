@@ -126,7 +126,6 @@
         if (parts.length == 5) {
             ret.entityId = parts[4]
         }
-        console.log(ret);
         return ret;
 
 
@@ -209,21 +208,21 @@
                 return '$$index:' + index;
             }
         });
-        console.log('T1');
+        //console.log('T1');
         let delta = instance.diff(left, right);
         //let html=jsondiffpatch.html.diffToHtml(localVersion[0], remoteVersion[0], delta)
-        console.log('T2');
+        //console.log('T2');
 
         let html = $(jsondiffpatch.formatters.html.format(delta, left));
         //jsondiffpatch.formatters.html.hideUnchanged();
-        console.log('T3');
+        //console.log('T3');
 
         let location = parseLocation(document.location.href);
         let title = location.class;
         if (!isClass) {
             title += ' : ' + $('#model\\.name').val();
         }
-        console.log('T4');
+        //console.log('T4');
 
         title += ' Visual Diff (PROD -> LOCAL)';
 
@@ -243,7 +242,7 @@
                 $("body").css({overflow: 'inherit'})
             }
         });
-        console.log('T6');
+        //console.log('T6');
 
     };
 
@@ -361,7 +360,6 @@
             apiUrl = host + '/i2/api/v1/dictionaries/' + location.dictionaryId;
         }
 
-        console.log(location, apiUrl);
 
 
         let d1 = $.get(apiUrl);
@@ -396,7 +394,7 @@
             $(bigChangesetOut).dialog({
                 width: 800,
                 height: 800,
-                title: 'Class Definition CS:' + location.class
+                title: 'Definition ChangeSet'
             });
 
 
@@ -467,7 +465,6 @@
             apiUrl = host + '/i2/api/v1/dictionaries/' + location.dictionaryId + '/changesets?limit=' + patchLimit;
         }
 
-        console.log(apiUrl);
         //let apiUrl = host + '/i2/api/v1/classes/' + location.class + '/entities/' + location.entityId + '/changesets?limit=' + patchLimit;
         let d1 = $.get(apiUrl);
         $.when(d1).done(function (localVersion) {
@@ -504,7 +501,6 @@
                         bigChangeset += "\n--------------------" + record.timestamp + "-" + record.author + "------------------------------------------\n";
                         let changes = record.changes || [];
                         changes = changes.map(function (change) {
-                            console.log(change)
 
                             if (change.targetEntityId) {
                                 let id = change.targetEntityId;
@@ -564,7 +560,7 @@
                     $(bigChangesetOut).dialog({
                         width: 800,
                         height: 800,
-                        title: 'Class Definition CS:' + location.class
+                        title: 'TOP 20 PATCH ChangeSet(s):'
                     });
 
 
@@ -617,7 +613,7 @@
                 $(bigChangesetOut).dialog({
                     width: 800,
                     height: 800,
-                    title: 'Class Definition CS:' + location.class
+                    title: 'TOP 20 PATCH ChangeSet(s):'
                 });
 
             }
@@ -639,7 +635,6 @@
         let apiUrl = host + '/i2/api/v1/classes/' + location.class + '/entities/' + '?limit=10000&fields=*,dictionaryProperty,relations%5B*(tag)%5D';
         let d1 = $.get(apiUrl);
         $.when(d1).done(function (data) {
-            console.log(data);
             let localVersion = data.records;
             localVersion = prepareEntity(localVersion);
             let payload = JSON.stringify(localVersion, null, 4);
@@ -652,7 +647,6 @@
             }
             postTemplate1 = postTemplate1.replace('{{entityId}}', eid);
 
-            console.log(postTemplate1);
             window.open('data:text/xml,' + encodeURIComponent(postTemplate1), location.class + '-' + location.entityId, "width=300,height=300,scrollbars=1,resizable=1");
 
         });
@@ -759,7 +753,7 @@
 					    </button>
 					    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1" style="right:0;left:initial">
 					        <li role="presentation"><a role="menuitem" tabindex="-1" class="jsonRepresentationChangeset" href="#" title="POST changeset for current shown item">POST changeset for current shown item</a></li>
-					        <li role="presentation"><a role="menuitem" tabindex="-1" class="patchHeaderChangeset" href="#" title="TOP 10 PATCH for CURRENT entity/class">TOP 10 PATCH for current item</a></li>
+					        <li role="presentation"><a role="menuitem" tabindex="-1" class="patchHeaderChangeset" href="#" title="TOP 20 PATCH for CURRENT entity/class">TOP 20 PATCH for current item</a></li>
 					    </ul>
 					</div>`;
                 menu = $(menu);
